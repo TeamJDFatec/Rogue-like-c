@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_LINHA 10
-#define MAX_COLUNA 10
+#define MAX_LINHA 20
+#define MAX_COLUNA 20
 
 int main() {
 
