@@ -1,24 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <conio.h>
 
 #define MAX_LINHA 20
 #define MAX_COLUNA 20
 
-int main() {
+
+// procedimento que converte uma string para maiúsculo
+char maiusculo(char comando){
+
+    if ((comando >= 97) && (comando <= 122)){
+        comando -= 32;
+    }
+
+    return comando;
+}
+
+int geraNumAleatorio(char eixo){
 
     srand(time(NULL));
+    int nAleatorio = rand()%120;
 
-    int ox = MAX_COLUNA / 2, oy = MAX_LINHA - 2; //porta de saída
-    int px = 1, py = 1; //personagem
-    int mx = (int)(MAX_COLUNA * 0.7), my = (int)(MAX_LINHA * 0.7); //monstro
-    int x, y;
-    int temEspada = 0;
+    if (eixo == 'X'){
+        if(nAleatorio >= MAX_COLUNA){
+            return nAleatorio - MAX_COLUNA;
+        } else if (nAleatorio < MAX_COLUNA){
+            return MAX_COLUNA - nAleatorio;
+        } else {
+            return nAleatorio;
+        }
+    } else if (eixo == 'Y'){
+        if (nAleatorio >= MAX_LINHA){
+            return nAleatorio - MAX_LINHA;
+        } else if (nAleatorio < MAX_LINHA) {
+            return MAX_LINHA - nAleatorio;
+        } else {
+            return nAleatorio;
+        }
+    }
 
-    int aleatoriedade = 0; //variavel necessária para o jeito 2 de fazer o monstro funcionar;
+}
+
+int main() {
 
     char comando;
-    //int movimentoRealizado;
+
+    int x, y;
+    int ox = MAX_COLUNA / 2, oy = MAX_LINHA - 2; //porta de saída
+    int px = 1, py = 1; //personagem
+    int mx = geraNumAleatorio('X'), my = geraNumAleatorio('Y');
+    int temEspada = 0;
 
     for (;;){
 
@@ -42,13 +74,14 @@ int main() {
         printf("\n");
 
 
-        printf("Comando: C (cima)\tD (direita)\tB (baixo)\tE (esquerda)\n");
+        printf("Comando: W (cima)\tD (direita)\tS (baixo)\tA (esquerda)\n");
         printf("Sua vez!. Digite um comando: ");
-        scanf(" %c", &comando);
+        comando = getch();
+        comando = maiusculo(comando);
 
         //movimentoRealizado = 1;
         switch(comando){
-            case 'c':
+            case 'W':
                 py = py - 1;
                 if (py < 1){
                     py = 1;
@@ -56,7 +89,7 @@ int main() {
                 }
                 break;
 
-            case 'b':
+            case 'S':
                 py += 1;
                 if (py >= MAX_LINHA - 1){
                     py = MAX_LINHA - 2;
@@ -64,7 +97,7 @@ int main() {
                 }
                 break;
 
-            case 'e':
+            case 'A':
                 px -= 1;
                 if (px < 1){
                     px = 1;
@@ -72,7 +105,7 @@ int main() {
                 }
                 break;
 
-            case 'd':
+            case 'D':
                 px += 1;
                 if (px >= MAX_COLUNA - 1){
                     px = MAX_COLUNA - 2;
@@ -87,9 +120,11 @@ int main() {
                 system("PAUSE");
         }
 
+        movMonstro(px, py);
+
         //inserir aqui o código do monstro perseguindo o personagem...
 
-        if(px != mx){
+       /* if(px != mx){
 
             if(px < mx) {
             mx = mx - 1;
@@ -110,13 +145,15 @@ int main() {
             }
 
         }
-
+*/
         /*----------------------------------------------------------------------------------------*/
 
         //inserir aqui o código do monstro andando aleatoriamente
 
-        /*aleatoriedade = rand()%120;
+        //aleatoriedade = rand()%120;
 
+
+        /*
         if(aleatoriedade <= 10) {
             mx = mx - 1;
 
