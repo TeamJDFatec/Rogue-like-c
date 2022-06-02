@@ -9,7 +9,7 @@
 #include<dos.h>
 
 #define MAX_LINHA 20
-#define MAX_COLUNA 20
+#define MAX_COLUNA 50
 
 
 // procedimento que converte uma string para maiúsculo
@@ -21,7 +21,6 @@ char maiusculo(char comando){
 
     return comando;
 }
-
 
 int geraNumAleatorio(char eixo){
 
@@ -44,83 +43,101 @@ int geraNumAleatorio(char eixo){
     return (int)nAleatorio;
 }
 
+void atualiza_frame(int px, int py, int mx, int my, int ox, int oy){
+
+    char mapa[MAX_LINHA][MAX_COLUNA];
+
+    Sleep(10);
+    system("CLS");
+    for(int i = 0; i < MAX_LINHA; i++){
+        printf("\t\t\t\t");
+        for(int j = 0; j < MAX_COLUNA; j++){
+            if((i == 0) || (j == 0) || (i == MAX_LINHA -1) || (j == MAX_COLUNA -1)){
+                mapa[i][j] = '#';
+            }else if(j == px && i == py){
+                mapa[i][j] = 'P';
+            }else if(j == mx && i == my){
+                mapa[i][j] = 'M';
+            }else if(j == ox && i == oy){
+                mapa[i][j] = '@';
+            }else{
+                mapa[i][j] = '.';
+            }
+
+            printf("%c", mapa[i][j]);
+        }
+
+        printf("\n");
+
+        mx = geraNumAleatorio('X');
+        my = geraNumAleatorio('Y');
+    }
+
+}
+
 int main(void) {
 
     maximize_window();
     hide_cursor();
 
-    int x, y;
+    char comando;
     int ox = MAX_COLUNA / 2, oy = MAX_LINHA - 2; //porta de saída
     int px = 1, py = 1; //personagem
-    int mx = 10, my = 10;
-    char comando;
+    int mx = MAX_COLUNA / 2, my = MAX_LINHA / 2;
+
+
+
 
     bool vivo = true;
     do{
-        system("CLS");
 
-        for (y = 0; y < MAX_LINHA; y++){
-            printf("\t\t\t");
-            for (x = 0; x < MAX_COLUNA; x++){
-                if (y == 0 || x == 0 || x == MAX_COLUNA - 1 || y == MAX_LINHA - 1)
-                    printf("#");
-                else if (x == px && y == py)
-                    printf("P");
-                else if (x == mx && y == my)
-                    printf("M");
-                else if (x == ox && y == oy)
-                    printf("@");
-                else
-                    printf(".");
+        atualiza_frame(px, py, mx, my, ox, oy);
+        Sleep(150);
+
+        if(kbhit()){
+            comando = getch();
+            comando = maiusculo(comando);
+
+            switch(comando){
+                case 'W':
+                    py = py - 1;
+                    if (py < 1){
+                        py = 1;
+                        //movimentoRealizado = 0;
+                    }
+                    break;
+
+                case 'S':
+                    py += 1;
+                    if (py >= MAX_LINHA - 1){
+                        py = MAX_LINHA - 2;
+                        //movimentoRealizado = 0;
+                    }
+                    break;
+
+                case 'A':
+                    px -= 1;
+                    if (px < 1){
+                        px = 1;
+                        //movimentoRealizado = 0;
+                    }
+                    break;
+
+                case 'D':
+                    px += 1;
+                    if (px >= MAX_COLUNA - 1){
+                        px = MAX_COLUNA - 2;
+                        //movimentoRealizado = 0;
+                    }
+                    break;
+
+                default:
+                    //movimentoRealizado = 0;
+                    printf("Comando invalido!\n");
+                    //printf("Pressione uma tecla para continuar!\n");
+                    system("PAUSE");
             }
-            printf("\n");
         }
-        printf("\n");
-
-        comando = getch();
-        comando = maiusculo(comando);
-
-        switch(comando){
-            case 'W':
-                py = py - 1;
-                if (py < 1){
-                    py = 1;
-                    //movimentoRealizado = 0;
-                }
-                break;
-
-            case 'S':
-                py += 1;
-                if (py >= MAX_LINHA - 1){
-                    py = MAX_LINHA - 2;
-                    //movimentoRealizado = 0;
-                }
-                break;
-
-            case 'A':
-                px -= 1;
-                if (px < 1){
-                    px = 1;
-                    //movimentoRealizado = 0;
-                }
-                break;
-
-            case 'D':
-                px += 1;
-                if (px >= MAX_COLUNA - 1){
-                    px = MAX_COLUNA - 2;
-                    //movimentoRealizado = 0;
-                }
-                break;
-
-            default:
-                //movimentoRealizado = 0;
-                printf("Comando invalido!\n");
-                printf("Pressione uma tecla para continuar!\n");
-                system("PAUSE");
-        }
-
-
 
     }while(vivo);
 
