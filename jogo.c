@@ -11,6 +11,12 @@
 #define MAX_LINHA 20
 #define MAX_COLUNA 50
 
+char MAPA[MAX_LINHA][MAX_COLUNA];
+
+int ox = MAX_COLUNA / 2, oy = MAX_LINHA - 2; //porta de saída
+int px = 1, py = 1; //personagem
+int mx = MAX_COLUNA / 2, my = MAX_LINHA / 2;
+
 
 // procedimento que converte uma string para maiúsculo
 char maiusculo(char comando){
@@ -43,101 +49,102 @@ int geraNumAleatorio(char eixo){
     return (int)nAleatorio;
 }
 
-void atualiza_frame(int px, int py, int mx, int my, int ox, int oy){
+void atualiza_frame(){
 
-    char mapa[MAX_LINHA][MAX_COLUNA];
+    //char mapa[MAX_LINHA][MAX_COLUNA];
 
-    Sleep(10);
     system("CLS");
     for(int i = 0; i < MAX_LINHA; i++){
         printf("\t\t\t\t");
         for(int j = 0; j < MAX_COLUNA; j++){
-            if((i == 0) || (j == 0) || (i == MAX_LINHA -1) || (j == MAX_COLUNA -1)){
-                mapa[i][j] = '#';
+            if((i == 0) || (j == 0) || (i == MAX_LINHA -1) || (j == MAX_COLUNA -1)
+               || (j == 7 && i <= 4) || (j >= 7 && j <= 18 && j != 11 && i == 4)
+               || (j == 18 && i <= 4) || (j == 43 && i <= 5) || (j >= 36 && j <= 43 && i == 5)
+               || (j == 36 && i >= 6 && i <= 11 && i != 8) || (j >= 37 && j <= 49 && i == 11)
+               || (j == 41 && i >= 14 && i < 20) || (j <= 10 && i == 9) || (j == 10 && i >= 9 && i <= 14)
+               || (j == 10 && i >= 17 && i <= 20) || (j == 19 && i >= 15 && i <= 20)
+               || (j >= 19 && j <= 32 && j != 26 && i == 15) || (j == 32 && i >= 15 && i <= 20)){
+                MAPA[i][j] = '#';
+            }else if(j == MAX_COLUNA -3 && i == 1){
+                MAPA[i][j] = 'C';
+            }else if(j == MAX_COLUNA -2 && i == MAX_LINHA - 2){
+                MAPA[i][j] = '0';
+            }else if(j == 17 && i == 1){
+                MAPA[i][j] = 'E';
+            }else if(j == 11 && i == 4){
+                MAPA[i][j] = 'O';
+            }else if(j == 26 && i == 15){
+                MAPA[i][j] = '_';
             }else if(j == px && i == py){
-                mapa[i][j] = 'P';
+                MAPA[i][j] = 'P';
             }else if(j == mx && i == my){
-                mapa[i][j] = 'M';
+                MAPA[i][j] = 'M';
             }else if(j == ox && i == oy){
-                mapa[i][j] = '@';
+                MAPA[i][j] = '@';
             }else{
-                mapa[i][j] = '.';
+                MAPA[i][j] = '.';
             }
 
-            printf("%c", mapa[i][j]);
+            printf("%c", MAPA[i][j]);
         }
 
         printf("\n");
-
-        mx = geraNumAleatorio('X');
-        my = geraNumAleatorio('Y');
     }
 
 }
 
 int main(void) {
 
-    maximize_window();
+    //maximize_window();
     hide_cursor();
 
     char comando;
-    int ox = MAX_COLUNA / 2, oy = MAX_LINHA - 2; //porta de saída
-    int px = 1, py = 1; //personagem
-    int mx = MAX_COLUNA / 2, my = MAX_LINHA / 2;
-
-
+    atualiza_frame();
 
 
     bool vivo = true;
     do{
+            mx = geraNumAleatorio('X');
+            my = geraNumAleatorio('Y');
 
-        atualiza_frame(px, py, mx, my, ox, oy);
-        Sleep(150);
-
-        if(kbhit()){
             comando = getch();
             comando = maiusculo(comando);
 
             switch(comando){
                 case 'W':
                     py = py - 1;
-                    if (py < 1){
-                        py = 1;
-                        //movimentoRealizado = 0;
+                    if (py < 1 || MAPA[py][px] == '#'){
+                        py += 1;
                     }
                     break;
 
                 case 'S':
                     py += 1;
-                    if (py >= MAX_LINHA - 1){
-                        py = MAX_LINHA - 2;
-                        //movimentoRealizado = 0;
+                    if (py >= MAX_LINHA - 1 || MAPA[py][px] == '#'){
+                        py -= 1;
                     }
                     break;
 
                 case 'A':
                     px -= 1;
-                    if (px < 1){
-                        px = 1;
-                        //movimentoRealizado = 0;
+                    if (px < 1 || MAPA[py][px] == '#'){
+                        px += 1;
                     }
                     break;
 
                 case 'D':
                     px += 1;
-                    if (px >= MAX_COLUNA - 1){
-                        px = MAX_COLUNA - 2;
-                        //movimentoRealizado = 0;
+                    if (px >= MAX_COLUNA - 1 || MAPA[py][px] == '#'){
+                        px -= 1;
                     }
                     break;
 
                 default:
-                    //movimentoRealizado = 0;
                     printf("Comando invalido!\n");
-                    //printf("Pressione uma tecla para continuar!\n");
                     system("PAUSE");
             }
-        }
+
+            atualiza_frame();
 
     }while(vivo);
 
