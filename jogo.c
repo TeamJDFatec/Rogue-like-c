@@ -23,9 +23,9 @@ int mx3 = 39, my3 = 7;
 int mx4 = 45, my4 = 10;
 int mx5 = 46, my5 = 1;
 
-int mx6 = 42, my6 = 15; //move quadrado
-int mx7 = 47, my7 = 18; //move quadrado
-int mx8 = 48, my8 = 17; //move reto
+int mx6 = 42, my6 = 15;
+int mx7 = 47, my7 = 18;
+int mx8 = 48, my8 = 17;
 
 int mx9 = 8, my9 = 2;
 int mx10 = 9, my10 = 1;
@@ -56,6 +56,11 @@ int cont = 0, cont2 = 0, cont3 = 0, cont4 = 0, cont5 = 0, cont6 = 0, cont7 = 0;/
 
 int aparece = 0; // só para sair do loop;
 
+int morto1, morto2, morto3, morto4, morto5, morto6, morto7, morto8, morto9, morto10, morto11, morto12; //morte de cada monstro pela espada.
+
+int dicaChave = 0;
+
+int dicaOrbe = 0;
 
 // procedimento que converte uma string para maiúsculo
 char maiusculo(char comando){
@@ -67,6 +72,7 @@ char maiusculo(char comando){
     return comando;
 }
 
+//Reinicia as variáveis para permitir jogar novamente
 void reset_variaveis(){
 
 ox = MAX_COLUNA / 2, oy = MAX_LINHA - 2; //porta de saída
@@ -78,9 +84,9 @@ mx3 = 39, my3 = 7;
 mx4 = 45, my4 = 10;
 mx5 = 46, my5 = 1;
 
-mx6 = 42, my6 = 15; //move quadrado
-mx7 = 47, my7 = 18; //move quadrado
-mx8 = 48, my8 = 17; //move reto
+mx6 = 42, my6 = 15;
+mx7 = 47, my7 = 18;
+mx8 = 48, my8 = 17;
 
 mx9 = 8, my9 = 2;
 mx10 = 9, my10 = 1;
@@ -109,13 +115,18 @@ contador = 0, contador2 = 0, contador3 = 0, contador4 = 0, contador5 = 0;
 
 cont = 0, cont2 = 0, cont3 = 0, cont4 = 0, cont5 = 0, cont6 = 0, cont7 = 0;
 
-aparece = 0; // só para sair do loop;
+aparece = 0; // faz com que a mensagem da porta de saída aberta apareça apenas uma vez;
+
+morto1, morto2, morto3, morto4, morto5, morto6, morto7, morto8, morto9, morto10, morto11, morto12;
+
+dicaChave = 0;
+
+dicaOrbe = 0;
 
 }
 
+//Desenha o mapa, o personagem, os monstros e os outros "objetos"
 void atualiza_frame(){
-
-    //char mapa[MAX_LINHA][MAX_COLUNA];
 
     system("CLS");
     for(int i = 0; i < MAX_LINHA; i++){
@@ -162,7 +173,9 @@ void atualiza_frame(){
                     MAPA[i][j] = '0';
                 }
             }else if(j == 17 && i == 1){
+
                 MAPA[i][j] = pegou_espada == 1 ? '.' : 'E';
+
             }else if(j == 11 && i == 4){
                 if(porta1_aberta == 1){
                     MAPA[i][j] = '.';
@@ -185,29 +198,113 @@ void atualiza_frame(){
                     MAPA[i][j] = '.';
                 }
             }else if(j == mx1 && i == my1){
-                MAPA[i][j] = 'M';
+
+                if(morto1 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx2 && i == my2){
-                MAPA[i][j] = 'M';
+
+                if(morto2 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx3 && i == my3){
-                MAPA[i][j] = 'M';
+
+                if(morto3 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx4 && i == my4){
-                MAPA[i][j] = 'M';
+
+                if(morto4 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx5 && i == my5){
-                MAPA[i][j] = 'M';
+
+                if(morto5 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx6 && i == my6){
-                MAPA[i][j] = 'M';
+
+                if(morto6 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx7 && i == my7){
-                MAPA[i][j] = 'M';
+
+                if(morto7 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx8 && i == my8){
-                MAPA[i][j] = 'M';
+
+                if(morto8 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx9 && i == my9){
-                MAPA[i][j] = 'M';
+
+                if(morto9 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx10 && i == my10){
-                MAPA[i][j] = 'M';
+
+                if(morto10 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx11 && i == my11){
-                MAPA[i][j] = 'M';
+
+                if(morto11 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == mx12 && i == my12){
-                MAPA[i][j] = 'M';
+
+                if(morto12 == 1){
+                    MAPA[i][j] = '.';
+                }
+                else{
+                    MAPA[i][j] = 'M';
+                }
+
             }else if(j == ox && i == oy){
                 MAPA[i][j] = '@';
             }else{
@@ -224,7 +321,7 @@ void atualiza_frame(){
 
 int main(void) {
 
-    hide_cursor(true);
+    hide_cursor(true);//esconde o cursor para ele não ficar piscando na tela
 
     setlocale(LC_ALL,"Portuguese");
 
@@ -235,8 +332,13 @@ int main(void) {
     do{
         bool vivo = true;
         do{
+                printf("\n\t\t\t\tChaves: %d\t", chaves);
+                printf("Orbes: %d\t", orbes);
+                printf("Espada: %d\t\n\n", espada);
+
                 comando = getch();
 
+                //permite sair do jogo pressionando ESC
                 if (comando == 27){
                     printf("TECLA ESC PRESSIONADA! Continuar jogando? (s p/ continuar)");
                     scanf("%c", &comando);
@@ -324,33 +426,76 @@ int main(void) {
                         system("PAUSE");
                 }
 
+                //Verifica se o jogador alcançou a saída
                 if (MAPA[py][px] == '@'){
                     printf("PARABÉNS!!! VOCÊ GANHOU\n");
-                    printf("Deseja jogar novamente? (s p/ continuar)");
+                    printf("Deseja jogar novamente? (s p/ jogar)");
                     scanf("%c", &comando);
                     comando = maiusculo(comando);
                     fflush(stdin);
+                    morto1 = 0, morto2 = 0, morto3 = 0, morto4 = 0, morto5 = 0, morto6 = 0, morto7 = 0, morto8 = 0, morto9 = 0, morto10 = 0, morto11 = 0, morto12 = 0;
                     jogando = comando == 'S';
                     vivo = false;
                     break;
                 }
 
-                espada = MAPA[py][px] == 'E' || espada == 1 ? 1 : 0;
-                pegou_espada = espada == 1 || pegou_espada == 1 ? 1 : 0;
+                //Verifica se o jogador pegou a espada
+                if(MAPA[1][17] == 'P'){
+                    espada = 1;
+                    pegou_espada = 1;
 
-                if (MAPA[py][px] == 'M'){
-                    if(espada == 0){
-                        printf("VOCÊ MORREU! Deseja jogar novamente? (s p/ jogar)");
-                        scanf("%c", &comando);
-                        comando = maiusculo(comando);
-                        fflush(stdin);
-                        jogando = comando == 'S';
-                        vivo = false;
-                        break;
-                    }else{
-                        espada = 0;
-                    }
+                    printf("Pegou a espada! Use para derrotar um dos monstros.");
+                    Sleep(3000);
                 }
+
+                //Permite matar os monstros se tiver com espada
+                if(MAPA[my1][mx1] == 'P' && espada == 1){
+                    espada = 0;
+                    morto1 = 1;
+                }else if(MAPA[my2][mx2] == 'P' && espada == 1){
+                    espada = 0;
+                    morto2 = 1;
+                }else if(MAPA[my3][mx3] == 'P' && espada == 1){
+                    espada = 0;
+                    morto3 = 1;
+                }else if(MAPA[my4][mx4] == 'P' && espada == 1){
+                    espada = 0;
+                    morto4 = 1;
+                }else if(MAPA[my5][mx5] == 'P' && espada == 1){
+                    espada = 0;
+                    morto5 = 1;
+                }else if(MAPA[my6][mx6] == 'P' && espada == 1){
+                    espada = 0;
+                    morto6 = 1;
+                }else if(MAPA[my7][mx7] == 'P' && espada == 1){
+                    espada = 0;
+                    morto7 = 1;
+                }else if(MAPA[my8][mx8] == 'P' && espada == 1){
+                    espada = 0;
+                    morto8 = 1;
+                }else if(MAPA[my9][mx9] == 'P' && espada == 1){
+                    espada = 0;
+                    morto9 = 1;
+                }else if(MAPA[my10][mx10] == 'P' && espada == 1){
+                    espada = 0;
+                    morto10 = 1;
+                }else if(MAPA[my11][mx11] == 'P' && espada == 1){
+                    espada = 0;
+                    morto11 = 1;
+                }else if(MAPA[my12][mx12] == 'P' && espada == 1){
+                    espada = 0;
+                    morto12 = 1;
+                }else if(MAPA[py][px] == 'M' && espada == 0){
+                    printf("VOCÊ MORREU! Deseja jogar novamente? (s p/ jogar)");
+                    scanf("%c", &comando);
+                    comando = maiusculo(comando);
+                    fflush(stdin);
+                    morto1 = 0, morto2 = 0, morto3 = 0, morto4 = 0, morto5 = 0, morto6 = 0, morto7 = 0, morto8 = 0, morto9 = 0, morto10 = 0, morto11 = 0, morto12 = 0;
+                    jogando = comando == 'S';
+                    vivo = false;
+                    break;
+                }
+
 
                 if(MAPA[4][11] == 'P' && chaves > 0 && cont == 0){
                     porta1_aberta = 1;
@@ -362,6 +507,14 @@ int main(void) {
                     cont2 ++;
                 }
 
+                if(MAPA[1][47] == 'P' || MAPA[9][24] == 'P') {
+                    if(dicaChave == 0){
+                        printf("Pegou uma Chave! Pode ser usada para abrir portas 'O'");
+                        dicaChave ++;
+                        Sleep(3000);
+                    }
+                }
+
                 if(MAPA[1][47] == 'P' && cont3 == 0){
                     chaves ++;
                     pegou_chave1 = 1;
@@ -370,6 +523,15 @@ int main(void) {
                     chaves ++;
                     pegou_chave2 = 1;
                     cont4 ++;
+                }
+
+
+                if(MAPA[18][48] == 'P' || MAPA[1][8] == 'P' || MAPA[10][1] == 'P') {
+                    if(dicaOrbe == 0){
+                        printf("Pegou um Orbe! Com 3 deles voce abre a porta para a saida.");
+                        dicaOrbe ++;
+                        Sleep(3000);
+                    }
                 }
 
                 if(MAPA[18][48] == 'P' && cont5 == 0){
@@ -385,6 +547,7 @@ int main(void) {
                     pegou_orbe3 = 1;
                     cont7 ++;
                 }
+
 
                 if(orbes == 3 && aparece == 0){
                     printf("\n\nA porta para a saida foi ABERTA!!\n\n");
